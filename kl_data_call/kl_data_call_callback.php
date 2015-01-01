@@ -2,7 +2,7 @@
 /*
 Plugin Name: 数据调用
 Version: 3.0
-Plugin URL: https://github.com/aweika/kl_data_call
+Plugin URL: https://github.com/aweika/em_kl_data_call
 Description: 实现emlog相关的数据调用功能。
 ForEmlog: 5.x版本
 Author: 阿维卡
