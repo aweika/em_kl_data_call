@@ -29,11 +29,17 @@ class KlDataCall
     //数据库连接实例
     private $_db;
 
+    //插件版本相关信息字段
+    private $_infoField;
+
     //缓存、配置、模板目录
     private $_fileDir = array('cache', 'config', 'views');
 
     //相关资源目录
     private $_urlDir = array('assets', 'res');
+
+    //需要可写权限的目录
+    private $_writableDir = array('config', 'cache');
 
     //提示信息（目录不可写、插件版本同数据表中存储的不一致等）
     private $_msg;
@@ -61,10 +67,10 @@ class KlDataCall
      */
     private function _getlocalVersion()
     {
-        $kl_data_call_info = Option::get('kl_data_call_info');
-        if (is_null($kl_data_call_info)) return '';
-        $kl_data_call_info = unserialize($kl_data_call_info);
-        return $kl_data_call_info['version'];
+        $plugin_info = Option::get($this->_infoField);
+        if (is_null($plugin_info)) return '';
+        $plugin_info = unserialize($plugin_info);
+        return $plugin_info['version'];
     }
 
     /**
@@ -73,11 +79,11 @@ class KlDataCall
     public function callbackInit()
     {
         Cache::getInstance()->updateCache('options');
-        $kl_data_call_info = Option::get('kl_data_call_info');
-        //未用过数据调用插件或使用2.0版本前不存在$kl_data_call_info信息
-        if (is_null($kl_data_call_info)) {
+        $plugin_info = Option::get('{$this->_infoField}');
+        //未用过数据调用插件或使用2.0版本前不存在$plugin_info信息
+        if (is_null($plugin_info)) {
             $info = serialize(array('version' => self::VERSION));
-            $this->_db->query("INSERT INTO " . DB_PREFIX . "options(option_name, option_value) VALUES('kl_data_call_info', '{$info}')");
+            $this->_db->query("INSERT INTO " . DB_PREFIX . "options(option_name, option_value) VALUES('{$this->_infoField}', '{$info}')");
             if ($this->_db->affected_rows() > 0) {
                 $cod = @opendir($this->_getDirPath('config'));
                 $did_arr = array();
@@ -98,9 +104,11 @@ class KlDataCall
             }
             Cache::getInstance()->updateCache('options');
         } else {
-            $kl_data_call_info = unserialize($kl_data_call_info);
+            $plugin_info = unserialize($plugin_info);
+
+
             //由于3.0版开始更新了缓存中的数据结构，所以启用时先更新全部数据缓存
-            if ($kl_data_call_info['version'] < '3.0') {
+            if ($plugin_info['version'] < '3.0') {
                 $options_cache = Cache::getInstance()->readCache('options');
                 foreach ($options_cache as $ock => $ocv) {
                     if (preg_match('/^kl_data_call_(\d+)$/', $ock)) $this->_mainFun(unserialize($ocv));
@@ -110,10 +118,10 @@ class KlDataCall
             //todo 如果升级有数据表相关修改，则像上面那样在这里写升级相关的代码
 
             //每次插件升级更新数据库中存储的插件版本
-            if ($kl_data_call_info['version'] < self::VERSION) {
-                $kl_data_call_info['version'] = self::VERSION;
-                $kl_data_call_info = serialize($kl_data_call_info);
-                $this->_db->query("UPDATE " . DB_PREFIX . "options SET option_value='{$kl_data_call_info}' WHERE option_name='kl_data_call_info'");
+            if ($plugin_info['version'] < self::VERSION) {
+                $plugin_info['version'] = self::VERSION;
+                $plugin_info = serialize($plugin_info);
+                $this->_db->query("UPDATE " . DB_PREFIX . "options SET option_value='{$plugin_info}' WHERE option_name='{$this->_infoField}'");
                 Cache::getInstance()->updateCache('options');
             }
         }
@@ -127,14 +135,31 @@ class KlDataCall
         echo '<div class="sidebarsubmenu" id="' . self::ID . '"><a href="./plugin.php?plugin=' . self::ID . '">' . self::NAME . '</a></div>';
     }
 
+    /**
+     * 检查相应的目录是否可写
+     */
+    private function _checkDirWritable()
+    {
+        $this->_msg = '';
+        if (count($this->_writableDir) > 0) {
+            foreach ($this->_writableDir as $dir) {
+                if (!is_writable($this->_getDirPath($dir))) {
+                    $this->_msg = '<span class="error">' . $dir . '目录可能不可写，如果已经是可写状态，请忽略此信息。</span>';
+                    break;
+                }
+            }
+        }
+    }
+
     public function init()
     {
         if ($this->_inited === true) {
             return;
         }
         $this->_inited = true;
+        $this->_infoField = self::ID . '_info';
         $this->_getDb();
-        $this->_msg = is_writable($this->_getDirPath('config')) && is_writable($this->_getDirPath('cache')) ? '' : '<span class="error">config或cache目录可能不可写，如果已经是可写状态，请忽略此信息。</span>';
+        $this->_checkDirWritable();
         if (empty($this->_msg) && $this->_getlocalVersion() !== self::VERSION) {
             $this->_msg = $this->_getlocalVersion() < self::VERSION ? '<span class="error">系统检测到有新版本的插件已安装，请先到<a href="./plugin.php">插件列表</a>页面先关闭此插件，再开启此插件。</span>' : '<span class="error">系统检测到您可能安装了较低版本的插件，请<a target="_blank" href="#">下载</a>最新版本插件。</span>';
         }
