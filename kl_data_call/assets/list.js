@@ -34,21 +34,30 @@ jQuery(function ($) {
                 return false
             }
             ;
-            var arguArr = ['kl_t', 'start_num', 'dis_rows', 'custom_tailor', 'author', 'is_include_img', 'order_style', 'date_style'];
+            var argu_arr_1 = ['kl_t', 'start_num', 'dis_rows', 'custom_tailor', 'author', 'is_include_img', 'order_style', 'date_style'];
+            var argu_arr_2 = [];
         } else if (kl_t == 2) {
-            var arguArr = ['kl_t', 'start_num', 'dis_rows', 'em_album', 'order_style', 'date_style'];
+            var argu_arr_1 = ['kl_t', 'start_num', 'dis_rows', 'em_album', 'order_style', 'date_style'];
+            var argu_arr_2 = [];
         } else {
             if ($.trim($('#custom_tailor').val()) != '' && !/^\d(\d|,)*$/.test($.trim($('#custom_tailor').val()))) {
                 alert('"个人定制"那里只允许输入数字和半角逗号的组合');
                 return false
             }
             ;
-            var arguArr = ['kl_t', 'sort', 'start_num', 'dis_rows', 'custom_tailor', 'author', 'filter', 'is_include_img', 'nopwd', 'link_style', 'order_style', 'date_style'];
+            //input or select
+            var argu_arr_1 = ['kl_t', 'sort', 'start_num', 'dis_rows', 'custom_tailor', 'author', 'filter', 'is_include_img', 'link_style', 'order_style', 'date_style'];
+            //checkbox
+            var argu_arr_2 = ['include_child_sort', 'nopwd'];
         }
         var ajaxUrl = $('#ajaxUrl').val();
         var arguStr = '';
-        $.each(arguArr, function () {
+        $.each(argu_arr_1, function () {
             arguStr += this + '=' + $('#' + this).val() + '&'
+        });
+        $.each(argu_arr_2, function () {
+            var value = typeof($('#' + this + ':checked').val()) == 'undefined' ? '' : $('#' + this + ':checked').val();
+            arguStr += this + '=' + value + '&'
         });
         ajaxUrl += '?' + arguStr.substring(0, arguStr.length - 1);
         $('#preview').html("<div><span style=\"background-color:#FFFFE5; color:#666666;\">加载中...</span></div>");

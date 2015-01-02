@@ -36,7 +36,9 @@
         <tr>
             <td align="left">所在分类：</td>
             <td><select name="sort" id="sort">
-                    <option value="-1">所有分类</option><?php echo $sort_option_str ?></select></td>
+                    <option value="-1">所有分类</option><?php echo $sort_option_str ?>
+                </select>　　　　　　<label><input id="include_child_sort" name="include_child_sort" type="checkbox" value="1" <?php if (isset($module['include_child_sort']) && $module['include_child_sort'] == 1) echo 'checked'; ?>/>包含子类<font color="orange">(当选择某个特定的分类时有效)</font></label>
+            </td>
         </tr>
         <tr>
             <td align="left">作者：</td>

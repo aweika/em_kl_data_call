@@ -418,7 +418,7 @@ class KlDataCall
                 $module['code'] = isset($_POST['code']) ? base64_encode($_POST['code']) : '';
             } else {
                 $intval_argu_arr1 = array('did' => '', 'start_num' => 0, 'dis_rows' => 10, 'cache_limit' => 300, 'filter' => 0, 'is_include_img' => 0);
-                $intval_argu_arr2 = array('sort', 'nopwd', 'link_style', 'order_style', 'date_style');
+                $intval_argu_arr2 = array('sort', 'include_child_sort', 'nopwd', 'link_style', 'order_style', 'date_style');
                 foreach ($intval_argu_arr1 as $iaak => $iaav) $module[$iaak] = trim($_POST[$iaak]) != '' ? intval($_POST[$iaak]) : $iaav;
                 foreach ($intval_argu_arr2 as $iaav) $module[$iaav] = isset($_POST[$iaav]) ? intval($_POST[$iaav]) : 0;
                 $module['description'] = trim($_POST['description']) != '' ? addslashes($_POST['description']) : '';
@@ -525,7 +525,20 @@ class KlDataCall
             if ($module['is_include_img'] == 1) $condition .= 'and content not regexp "<img[^>]*src=[\'\"][^>]*/admin/[^>]*[\'\"][^>]*>" and content regexp "<img[^>]*src=[\'\"][^>]*[\'\"][^>]*>" ';
             if ($module['is_include_img'] == 2) $condition .= 'and content not regexp "<img[^>]*src=[\'\"][^>]*[\'\"][^>]*>" ';
             if ($module['nopwd'] == 1) $condition .= 'and a.password="" ';
-            if ($module['sort'] != -1) $condition .= $module['sort'] == 0 ? 'and a.sortid=-1 ' : 'and a.sortid=' . $module['sort'] . ' ';
+            if ($module['sort'] != -1) {
+                if ($module['sort'] == 0) {
+                    $condition .= 'and a.sortid=-1 ';
+                } else {
+                    $sort_cache = Cache::getInstance()->readCache('sort');
+                    $sort = $sort_cache[$module['sort']];
+                    if ($sort['pid'] != 0 || empty($sort['children']) || !$module['include_child_sort']) {
+                        $condition .= ' and sortid=' . $module['sort'] . ' ';
+                    } else {
+                        $sortids = array_merge(array($module['sort']), $sort['children']);
+                        $condition .= ' and sortid in (' . implode(',', $sortids) . ') ';
+                    }
+                }
+            }
             if (isset($module['author']) && !empty($module['author'])) $condition .= "and c.uid={$module['author']} ";
         }
         $condition .= 'group by a.gid ';
@@ -829,7 +842,7 @@ class KlDataCall
         } elseif ($kl_t == 2) {
             $intval_argu_arr = array('kl_t', 'start_num', 'dis_rows', 'em_album', 'order_style', 'date_style');
         } else {
-            $intval_argu_arr = array('kl_t', 'sort', 'start_num', 'dis_rows', 'author', 'filter', 'is_include_img', 'nopwd', 'link_style', 'order_style', 'date_style');
+            $intval_argu_arr = array('kl_t', 'sort', 'include_child_sort', 'start_num', 'dis_rows', 'author', 'filter', 'is_include_img', 'nopwd', 'link_style', 'order_style', 'date_style');
         }
         foreach ($intval_argu_arr as $iaav) $module[$iaav] = intval($_GET[$iaav]);
         if ($kl_t != 2) $module['custom_tailor'] = addslashes(trim($_GET['custom_tailor']));
