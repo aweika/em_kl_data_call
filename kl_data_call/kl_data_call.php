@@ -218,7 +218,7 @@ class KlDataCall
             $author_option_str .= "<option value=\"{$uk}\" {$selected}>{$user['name']}</option>";
         }
 
-        $is_include_img_arr = array('全部文章', '仅显示有图片的微语', '仅显示没有图片的微语');
+        $is_include_img_arr = array('全部微语', '仅显示有图片的微语', '仅显示没有图片的微语');
         $is_include_img_option_str = '';
         foreach ($is_include_img_arr as $value => $is_include_img) {
             $selected = (isset($module['is_include_img']) && $value == $module['is_include_img']) ? 'selected' : '';

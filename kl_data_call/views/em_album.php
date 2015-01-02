@@ -17,16 +17,18 @@
     <input type="hidden" id="kl_t" name="kl_t" value="2">
     <table width="100%" border="0" cellpadding="0" cellspacing="1" class="table_b">
         <tr>
-            <td align="left" width="120">ID2：</td>
+            <td align="left" width="120">ID：</td>
             <td>
-                <input id="did" name="did" style="padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onFocus="this.blur()" type="text" value="<?php echo $did; ?>"/><font color="green"> * 此ID由系统自动分配。</font>
+                <input id="did" name="did" style="padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onFocus="this.blur()" type="text" value="<?php echo $did; ?>"/>
+                <span style="color:green;"> * 此ID由系统自动分配。</span>
             </td>
         </tr>
         <tr>
             <td align="left">描述：</td>
             <td>
                 <input id="description" name="description" type="text" value="<?php if (isset($module['description'])) echo $module['description']; ?>"/>
-                <font color="green"> * 请输入适当的描述，以利于数据管理。</font></td>
+                <span style="color:green;"> * 请输入适当的描述，以利于数据管理。</span>
+            </td>
         </tr>
         <tr>
             <td align="left">相册：</td>
@@ -53,7 +55,8 @@
         <tr>
             <td align="left">排序方式：</td>
             <td>
-                <select id="order_style" name="order_style"><?php echo $order_style_option_str; ?></select> * 设置随机时请将数据缓存时间设置为0
+                <select id="order_style" name="order_style"><?php echo $order_style_option_str; ?></select>
+                <span style="color:orange;">* 设置随机时请将数据缓存时间设置为0</span>
             </td>
         </tr>
         <tr>
@@ -62,7 +65,7 @@
         </tr>
         <tr>
             <td align="left">可用的变量：</td>
-            <td>自增ID{auto_id}, 相册名称{album_name}, 相册描述{album_description}, 相册创建时间{album_datetime}, 相册地址{album_url}<br/>图片地址(缩略){thum_photo_url}, 图片地址(原图){photo_url}图片描述{photo_description}, 图片创建时间{photo_datetime}, 相册封面{album_cover}
+            <td>自增ID{auto_id}, 相册名称{album_name}, 相册描述{album_description}, 相册创建时间{album_datetime}, 相册地址{album_url}<br/>图片地址(缩略){thum_photo_url}, 图片地址(原图){photo_url}, 图片描述{photo_description}, 图片创建时间{photo_datetime}, 相册封面{album_cover}
             </td>
         </tr>
         <tr>
@@ -75,7 +78,8 @@
             <td align="left">内部调用方法：</td>
             <td>
                 <div style="position:relative;">
-                    <input type="text" id="internal_call_function" name="internal_call_function" value="kl_data_call_for_internal(<?php echo $did; ?>, $cols=1, $col=1)" style="width:270px;padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onfocus="this.select()"/><font color="green"> * $cols和COLS代表把数据分为几组，$col和COL代表显示第几组。</font>
+                    <input type="text" id="internal_call_function" name="internal_call_function" value="kl_data_call_for_internal(<?php echo $did; ?>, $cols=1, $col=1)" style="width:270px;padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onfocus="this.select()"/>
+                    <span style="color:green;"> * $cols和COLS代表把数据分为几组，$col和COL代表显示第几组。</span>
                 </div>
             </td>
         </tr>

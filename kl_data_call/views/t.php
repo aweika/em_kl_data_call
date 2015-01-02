@@ -16,21 +16,25 @@
     <input type="hidden" id="kl_t" name="kl_t" value="1">
     <table width="100%" border="0" cellpadding="0" cellspacing="1" class="table_b">
         <tr>
-            <td align="left" width="120">ID1：</td>
+            <td align="left" width="120">ID：</td>
             <td>
-                <input id="did" name="did" style="padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onFocus="this.blur()" type="text" value="<?php echo $did; ?>"/><font color="green"> * 此ID由系统自动分配。</font>
+                <input id="did" name="did" style="padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onFocus="this.blur()" type="text" value="<?php echo $did; ?>"/>
+                <span style="color:green;"> * 此ID由系统自动分配。</span>
             </td>
         </tr>
         <tr>
             <td align="left">描述：</td>
             <td>
                 <input id="description" name="description" type="text" value="<?php if (isset($module['description'])) echo $module['description']; ?>"/>
-                <font color="green"> * 请输入适当的描述，以利于数据管理。</font></td>
+                <span style="color:green;"> * 请输入适当的描述，以利于数据管理。</span>
+            </td>
         </tr>
         <tr>
             <td align="left">个人定制：</td>
             <td>
-                <input id="custom_tailor" name="custom_tailor" type="text" value="<?php echo isset($module['custom_tailor']) ? $module['custom_tailor'] : ''; ?>"/><font color="green"> * 此选项可以填入要调用的<strong>微语id</strong>,用<strong>半角的逗号(,)</strong>分隔即可，如(20,15,16,25)。</font><font color="red">(优先级：高)</font>
+                <input id="custom_tailor" name="custom_tailor" type="text" value="<?php echo isset($module['custom_tailor']) ? $module['custom_tailor'] : ''; ?>"/>
+                <span style="color:green;"> * 此选项可以填入要调用的<strong>微语id</strong>,用<strong>半角的逗号(,)</strong>分隔即可，如(20,15,16,25)。</span>
+                <span style="color:red;">(优先级：高)</span>
             </td>
         </tr>
         <tr>
@@ -63,7 +67,8 @@
         <tr>
             <td align="left">排序方式：</td>
             <td>
-                <select id="order_style" name="order_style"><?php echo $order_style_option_str; ?></select> * 设置随机时请将数据缓存时间设置为0
+                <select id="order_style" name="order_style"><?php echo $order_style_option_str; ?></select>
+                <span style="color:orange;">* 设置随机时请将数据缓存时间设置为0</span>
             </td>
         </tr>
         <tr>
@@ -86,7 +91,8 @@
             <td align="left">内部调用方法：</td>
             <td>
                 <div style="position:relative;">
-                    <input type="text" id="internal_call_function" name="internal_call_function" value="kl_data_call_for_internal(<?php echo $did; ?>, $cols=1, $col=1)" style="width:270px;padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onfocus="this.select()"/><font color="green"> * $cols和COLS代表把数据分为几组，$col和COL代表显示第几组。</font>
+                    <input type="text" id="internal_call_function" name="internal_call_function" value="kl_data_call_for_internal(<?php echo $did; ?>, $cols=1, $col=1)" style="width:270px;padding:2px; border:1px solid; border-color:#666 #ccc #ccc #666; background:#F9F9F9; color:#333;" onfocus="this.select()"/>
+                    <span style="color:green;"> * $cols和COLS代表把数据分为几组，$col和COL代表显示第几组。</span>
                 </div>
             </td>
         </tr>
