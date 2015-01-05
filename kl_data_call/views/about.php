@@ -10,7 +10,6 @@
     <a class="navi4" href="?plugin=kl_data_call&act=add&kl_t=1">微语调用</a>
     <a class="navi4" href="?plugin=kl_data_call&act=add&kl_t=2">EM相册调用</a>
     <a class="navi3" href="?plugin=kl_data_call&act=about" style="color:orange;">关于作者</a>
-    <?php if (isset($_GET['active_save'])): ?><span class="actived">保存成功</span><?php endif; ?>
 </div>
 <div style="height: 100px;">
     <table width="100%" border="0" cellpadding="0" cellspacing="1" class="table_b">

@@ -885,7 +885,7 @@ class KlDataCall
         echo '<script src="../include/lib/js/common_tpl.js" type="text/javascript"></script>';
         echo sprintf('<script src="%s/jquery.zclip.min.js" type="text/javascript"></script>', $this->_getDirPath('res'));
         echo sprintf('<script type="text/javascript">$("#%s").addClass("sidebarsubmenu1");setTimeout(hideActived,2600);</script>', self::ID);
-        echo sprintf('<link rel="stylesheet" href="%s">', $this->_getDirPath('assets') . '/main.css?ver=' . urlencode(self::VERSION));
+        echo sprintf('<link rel="stylesheet" href="%s">', $this->_getDirPath('assets') . '/main.css?v=' . urlencode(self::VERSION));
         echo sprintf('<div class=containertitle><b>%s</b><span style="font-size:12px;color:#999999;">（版本：%s）</span>%s</div>', self::NAME, self::VERSION, $this->_msg);
     }
 
